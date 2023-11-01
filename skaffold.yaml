@@ -3,9 +3,11 @@ kind: Config
 metadata:
   name: k8s-web-application
 build:
+  tagPolicy:
+    sha256: {} # tags as latest (https://skaffold.dev/docs/taggers/)
   artifacts:
     # - image: taskit
-    - image: gitlab.lnu.se:5050/2dv013/content/examples/example-kuberneterized-web-application/taskit:latest
+    - image: gitlab.lnu.se:5050/2dv013/content/examples/example-kuberneterized-web-application/taskit
       docker:
         dockerfile: Dockerfile.production
 manifests:
