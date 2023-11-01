@@ -27,8 +27,8 @@ deploy:
    # Configure kubectl to use our own k8s cluster, you need to setup an Gitlab agent in you k8s kluster
     - kubectl config use-context $K8S_CONTEXT
    # Authorize the cluster to pull images from our registry. (synced against Deploy Token "gitlab-deploy-token")
-    - kubectl delete secret regcred || true
-    - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
+   # - kubectl delete secret regcred || true
+   # - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
 
     - kubectl apply -f ./k8s/taskit.yaml -f ./k8s/mongodb.yaml # We are skipping ingress for now
     
