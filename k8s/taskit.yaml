@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service.name: taskit
+  name: taskit
+spec:
+  type: NodePort # Using this to connect loadBalancer to in CSCloud
+  ports:
+    - name: "task-it-port"
+      port: 8888
+      targetPort: taskit-http
+  selector:
+    deployment.name: taskit
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taskit
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment.name: taskit
+  template:
+    metadata:
+      labels:
+        deployment.name: taskit
+    spec:
+      containers:
+      - name: taskit
+        #image: taskit
+        image: gitlab.lnu.se:5050/2dv013/student/tstjostudent/k-8-s-web-application/taskit # Update to your project url
+        env:
+        - name: DB_CONNECTION_STRING
+          value: "mongodb://mongodb:27017/tasks"
+        - name: PORT
+          value: "3000"
+        - name: BASE_URL
+          value: "/"
+        - name: SESSION_NAME
+          value: "session"
+        - name: SESSION_SECRET
+          value: "test"
+        - name: LOG_LEVEL
+          value: "silly"
+        - name: LOGGER_MORGAN_FORMAT_ADD_REMOTE
+          value: "true"
+        - name: LOGGER_COMBINED_LOG_FILE
+          value: "/var/log/just-task-it/combined.log"
+        - name: LOGGER_ERROR_LOG_FILE
+          value: "/var/log/just-task-it/error.log"
+        - name: LOGGER_UNCAUGHT_EXCEPTION_LOG_FILE
+          value: "/var/log/just-task-it/uncaught-exception.log"
+        ports:
+          - containerPort: 3000
+            name: taskit-http
+      imagePullSecrets:
+      - name: regcred # Secret set as a secret in the cluster
+

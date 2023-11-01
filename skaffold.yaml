@@ -1,0 +1,15 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: k8s-web-application
+build:
+  artifacts:
+    # - image: taskit
+    - image: gitlab.lnu.se:5050/2dv013/student/tstjostudent/k-8-s-web-application/taskit
+      docker:
+        dockerfile: Dockerfile.production
+manifests:
+  rawYaml:
+    - k8s/ingress.yaml
+    - k8s/mongodb.yaml
+    - k8s/taskit.yaml
