@@ -36,7 +36,7 @@ const defaultMetadata = {
    *
    * @returns {object} The current request.
    */
-  get request () {
+  get request() {
     const req = httpContext.get('request')
     return {
       startTime: req?._startTime,
@@ -54,7 +54,7 @@ const defaultMetadata = {
    *
    * @returns {object} The current request's session ID.
    */
-  get sessionId () {
+  get sessionId() {
     const req = httpContext.get('request')
     return req?.sessionID
   },
@@ -64,7 +64,7 @@ const defaultMetadata = {
    *
    * @returns {object} The current request's user.
    */
-  get user () {
+  get user() {
     const req = httpContext.get('request')
     return req?.session?.user
   }
@@ -221,7 +221,7 @@ if (process.env.LOGGER_DB_CONNECTION_STRING) {
   await import('winston-mongodb')
 
   logger.add(new transports.MongoDB({
-    level: 'warn',
+    level: process.env.LOG_LEVEL || 'warn',
     db: process.env.LOGGER_DB_CONNECTION_STRING,
     options: {
       poolSize: 2,

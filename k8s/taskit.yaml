@@ -48,6 +48,8 @@ spec:
           value: "silly"
         - name: LOGGER_MORGAN_FORMAT_ADD_REMOTE
           value: "true"
+        - name: LOGGER_DB_CONNECTION_STRING
+          value: "mongodb://mongodb:27017/taskit-log"
         - name: LOGGER_COMBINED_LOG_FILE
           value: "/var/log/just-task-it/combined.log"
         - name: LOGGER_ERROR_LOG_FILE
