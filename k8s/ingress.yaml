@@ -4,6 +4,7 @@ metadata:
   name: ingress
   annotations:
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:
