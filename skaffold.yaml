@@ -8,9 +8,10 @@ build:
     - image: gitlab.lnu.se:5050/2dv013/content/examples/example-kuberneterized-web-application/taskit
       docker:
         dockerfile: Dockerfile.production
+manifests:
+  rawYaml:
+    - k8s/ingress.yaml
+    - k8s/mongodb.yaml
+    - k8s/taskit.yaml
 deploy:
-  kubectl:
-    manifests:
-      - k8s/ingress.yaml
-      - k8s/mongodb.yaml
-      - k8s/taskit.yaml
+  kubectl: {}
