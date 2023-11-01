@@ -1,84 +1,74 @@
-# Dockerized Web Application
+# Kuberneterized Web Application
 
-## Overview
+Development and production environment
 
-This represents a Docker implementation of the 'Just Task It!' web application.
+## Development
 
-## How to Use
+### Requirements
 
-To execute the application, Docker must be installed on your system. Additionally, certain environment variables need to be set for the application to function correctly. These include:
+#### kubctl
+**Kubectl** is a command line interface to inspect and control the kubernetes instance.  
 
-1. DOCKER_PORT: This variable should be set to the port number on which your application will be accessible.
-2. SESSION_SECRET: This variable is used for session management in your application. It should be set to a secret passphrase.
-3. DOCKER_HOST: If a using a remote server, this variable should be set to the address of the remote server. Docker uses this variable to determine the host on which its commands should be executed.
-
-### Local Machine
-
-If you're running on a local machine with [Docker Desktop](https://www.docker.com/) installed, you can execute the following commands:
-
-For development environment:
+If you have Docker Desktop installed, you should already have kubectl. Verify with:
 
 ```bash
-npm run docker:dev
+kubectl version
 ```
 
-For production environment:
+If not installed, or you need to upgrade: [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)  
+
+#### Skaffold
+**Skaffold** is a command line tool to helps with the development workflow.
+
+[Install Skaffold](https://skaffold.dev/docs/install/)  
+
+#### Minikube
+**Minikube** is a small kubernetes instance running inside a Docker container. 
+
+[Install minikube](https://minikube.sigs.k8s.io/docs/start/)  
+
+### Development
+
+Make sure Docker Desktop is running.
+
+Start minikube:  
 
 ```bash
-npm run docker:prod
+minikube start
 ```
 
-### Cloud Machine (Ubuntu 22.04 with Docker, and NGINX Installed)
-
-While automated deployment through a CI/CD pipeline like GitLab is the recommended approach for production environments, there might be scenarios where manual deployment is necessary. For instance, you might want to deploy manually to a remote server for initial testing purposes.
-
-#### Manual deployment
-
-To test your dockerized application, you can manually deploy and run it on your remote server.
-
-Docker uses the DOCKER_HOST environment variable to determine the host on which its commands should be executed. By assigning an SSH URL to this variable, Docker can be directed to perform operations on a specified remote server.  In this case, you also need to add your private SSH key to the SSH agent using the ssh-add command.
-
-> The process of adding your private SSH key to the SSH agent does differ between MacOS, Unix-like systems, and Windows.
->
-> On MacOS, you can add your private SSH key to the SSH agent using the ssh-add command directly in the terminal:
->
-> ```bash
-> ssh-add -K /path/to/your/private/key.pem
-> ```
->
-> On Unix-like systems, the command would look like this:
->
-> ```bash
-> eval $(ssh-agent)
-> ssh-add /path/to/your/private/key.pem
-> ```
->
-> On Windows, if you're using PowerShell, you can start the SSH agent and add your private key with the following commands:
->
-> ```powershell
-> # Start the SSH agent
-> ssh-agent | Invoke-Expression
->
-> # Add your private key to the SSH agent
-> ssh-add 'C:\path\to\your\private\key.pem'
-> ```
-
-For Unix-like systems, the command would look like this:
+Enable the Nginx ingress controller for minikube:
 
 ```bash
-DOCKER_HOST=ssh://ubuntu@<remote servers IP number> DOCKER_PORT=8080 SESSION_SECRET="june-compost-sniff8" docker compose -f docker-compose.yaml -f docker-compose.production.yaml up --build -d
+minikube addons enable ingress
 ```
 
-In this command, ensure to replace `<remote server's IP number>` with your remote server's IP. Also, remember to add your private SSH key to the SSH agent using the ssh-add command.
+See Using [Stackoverflow - What does minikube docker-env mean?](https://stackoverflow.com/questions/52310599/what-does-minikube-docker-env-mean) for details.
 
-For Windows PowerShell, you can set the environment variable and run the command like this:
 
-```powershell
-$env:DOCKER_HOST="ssh://ubuntu@<remote server's IP number>"; $env:DOCKER_PORT=8080; $env:SESSION_SECRET="june-compost-sniff8"; docker compose -f docker-compose.yaml -f docker-compose.production.yaml up --build -d
+#### Bash
+
+```bash
+eval $(minikube -p minikube docker-env)
 ```
 
-Again, replace `<remote server's IP number>` with your remote server's IP. For adding your private SSH key to the SSH agent on Windows, you might need to use a tool like PuTTY or OpenSSH which comes built-in with Windows 10.
+Start Skaffold for development:  
 
-#### Automated deployment
+```bash
+skaffold dev
+```  
 
-...coming soon
+#### Connect to the exposed service in Minicube
+
+Open a new terminal.
+
+```bash
+minikube tunnel
+```
+_You may be prompted for your computer password since minikube want´s to open priviliged ports._
+
+Then visit the [http://localhost](http://localhost)
+
+## Production
+
+For production in CSCloud:
