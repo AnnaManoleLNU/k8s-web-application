@@ -5,7 +5,7 @@ metadata:
     service.name: taskit
   name: taskit
 spec:
-  type: NodePort # Using this to connect loadBalancer to in CSCloud
+ # type: NodePort # Using this to connect loadBalancer to in CSCloud
   ports:
     - name: "task-it-port"
       port: 8888
