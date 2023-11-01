@@ -5,7 +5,7 @@ metadata:
 build:
   artifacts:
     # - image: taskit
-    - image: gitlab.lnu.se:5050/2dv013/student/tstjostudent/k-8-s-web-application/taskit
+    - image: gitlab.lnu.se:5050/2dv013/content/examples/example-kuberneterized-web-application/taskit
       docker:
         dockerfile: Dockerfile.production
 manifests:
