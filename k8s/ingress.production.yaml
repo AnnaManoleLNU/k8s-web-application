@@ -4,7 +4,7 @@ metadata:
   name: ingress
   annotations:
 spec:
-#  ingressClassName: nginx # Only in production.
+  ingressClassName: nginx # Only in production.
   rules:
     - http:
         paths:

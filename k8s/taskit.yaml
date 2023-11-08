@@ -20,7 +20,7 @@ metadata:
   name: taskit
   namespace: default
 spec:
-  replicas: 2
+  replicas: 1 # Update to 3 to get stateful proplems. Look at flash messages.
   selector:
     matchLabels:
       deployment.name: taskit
