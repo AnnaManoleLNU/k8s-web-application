@@ -32,7 +32,7 @@ spec:
       containers:
       - name: taskit
         #image: taskit
-        image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/taskit:latest # Updated to my project url
+        image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/taskit # Updated to my project url
         env:
         - name: DB_CONNECTION_STRING
           value: "mongodb://mongodb:27017/tasks"
