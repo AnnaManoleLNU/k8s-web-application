@@ -18,9 +18,9 @@ deploy:
   image:
     name: gcr.io/k8s-skaffold/skaffold:v2.8.0
     entrypoint: ['']
-#  environment:
-#    name: production
-#    url: $TASKIT_URL # Set as environment variable. URL to your load balancer. Ie HTTP://cscloud6-25.lnu.se
+  environment:
+   name: production
+   url: $TASKIT_URL # Set as environment variable. URL to your load balancer. Ie HTTP://cscloud6-25.lnu.se
   when: manual
   script:
     - kubectl config get-contexts
@@ -30,8 +30,8 @@ deploy:
     - kubectl delete secret regcred || true
     - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
 
-    #- kubectl apply -f ./k8s/taskit.yaml -f ./k8s/mongodb.yaml -f ./k8s/ingress.yaml # We are skipping ingress for now
-    - skaffold deploy --profile production --images gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application:${CI_COMMIT_TAG:-latest}
+    - kubectl apply -f ./k8s/taskit.yaml -f ./k8s/mongodb.yaml -f ./k8s/ingress.yaml # We are skipping ingress for now
+    # - skaffold deploy --profile production --images gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application:${CI_COMMIT_TAG:-latest}
 
     
    # Debugging outputs after completion
