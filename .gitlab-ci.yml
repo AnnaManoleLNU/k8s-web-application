@@ -20,7 +20,7 @@ deploy:
     entrypoint: ['']
   environment:
    name: production
-   url: $TASKIT_URL # Set as environment variable. URL to your load balancer. Ie HTTP://cscloud6-25.lnu.se
+   url: $TASKIT_URL # Set as environment variable. URL to your load balancer. 
   when: manual
   script:
     - kubectl config get-contexts
