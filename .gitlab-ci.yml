@@ -32,6 +32,7 @@ deploy:
 
     - echo $CI_REGISTRY
     - echo $CI_DEPLOY_USER
+    - echo $K8S_CONTEXT
     
 
     #- kubectl apply -f ./k8s/taskit.yaml -f ./k8s/mongodb.yaml -f ./k8s/ingress.yaml # We are skipping ingress for now
