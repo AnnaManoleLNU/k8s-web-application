@@ -31,7 +31,7 @@ deploy:
     - kubectl create secret docker-registry regcred --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
 
     #- kubectl apply -f ./k8s/taskit.yaml -f ./k8s/mongodb.yaml -f ./k8s/ingress.yaml # We are skipping ingress for now
-    - skaffold deploy --profile production --images gitlab.lnu.se:5050/2dv013/content/examples/example-kuberneterized-web-application/taskit:${CI_COMMIT_TAG:-latest}
+    - skaffold deploy --profile production --images gitlab.lnu.se:5050/2dv013/content/examples/example-kuberneterized-web-application/taskit:latest
     
    # Debugging outputs after completion
     - kubectl get deployments
