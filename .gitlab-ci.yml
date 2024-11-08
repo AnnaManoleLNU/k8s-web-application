@@ -38,7 +38,7 @@ deploy:
     
 
     #- kubectl apply -f ./k8s/taskit.yaml -f ./k8s/mongodb.yaml -f ./k8s/ingress.yaml # We are skipping ingress for now
-    - skaffold deploy --profile production --images gitlab.lnu.se:5050/2dv013/content/student/am224wd/part2-architecture/kuberneterized-web-application:${CI_COMMIT_TAG-latest}
+    - skaffold deploy --profile production --images gitlab.lnu.se:5050/2dv013/content/student/am224wd/part2-architecture/kuberneterized-web-application/taskit:${CI_COMMIT_TAG:-latest}
     
    # Debugging outputs after completion
     - kubectl get deployments
