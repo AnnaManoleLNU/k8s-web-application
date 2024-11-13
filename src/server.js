@@ -1,8 +1,6 @@
 /**
  * @file Defines the main application.
  * @module src/server
- * @author Mats Loock
- * @version 3.1.0
  */
 
 import httpContext from 'express-http-context' // Must be first!
@@ -12,8 +10,7 @@ import session from 'express-session'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { connectToDatabase } from './config/mongoose.js'
-// TODO: Substitute the current in-memory session store with a persistent session store, such as Redis.
-import { sessionOptions } from './config/sessionOptions.js'
+import { sessionOptions } from './config/sessionOptions.js' // Import Redis session options
 import { router } from './routes/router.js'
 import { randomUUID } from 'node:crypto'
 import { morganLogger } from './config/morgan.js'
@@ -41,21 +38,18 @@ try {
   app.use(expressLayouts)
 
   // Parse requests of the content type application/x-www-form-urlencoded.
-  // Populates the request object with a body object (req.body).
   app.use(express.urlencoded({ extended: false }))
 
   // Serve static files.
   app.use(express.static(join(directoryFullName, '..', 'public')))
 
-  // Setup and use session middleware (https://github.com/expressjs/session)
+  // Setup and use session middleware
   if (process.env.NODE_ENV === 'production') {
-    app.set('trust proxy', 1) // trust first proxy
+    app.set('trust proxy', 1) // Trust the first proxy in production
   }
-  app.use(session(sessionOptions))
+  app.use(session(sessionOptions)) // Use Redis-backed session configuration
 
   // Add the request-scoped context.
-  // NOTE! Must be placed before any middle that needs access to the context!
-  //       See https://www.npmjs.com/package/express-http-context.
   app.use(httpContext.middleware)
 
   // Use a morgan logger.
@@ -63,8 +57,6 @@ try {
 
   // Middleware to be executed before the routes.
   app.use((req, res, next) => {
-    // Add a request UUID to each request and store information about
-    // each request in the request-scoped context.
     req.requestUuid = randomUUID()
     httpContext.set('request', req)
 
@@ -76,7 +68,6 @@ try {
 
     // Pass the base URL to the views.
     res.locals.baseURL = baseURL
-
     next()
   })
 
@@ -103,15 +94,8 @@ try {
       return
     }
 
-    // ---------------------------------------------------
-    // ⚠️ WARNING: Development Environment Only!
-    //             Detailed error information is provided.
-    // ---------------------------------------------------
-
     // Render the error page.
-    res
-      .status(err.status || 500)
-      .render('errors/error', { error: err })
+    res.status(err.status || 500).render('errors/error', { error: err })
   })
 
   // Starts the HTTP server listening for connections.
