@@ -36,7 +36,7 @@ const defaultMetadata = {
    *
    * @returns {object} The current request.
    */
-  get request() {
+  get request () {
     const req = httpContext.get('request')
     return {
       startTime: req?._startTime,
@@ -54,7 +54,7 @@ const defaultMetadata = {
    *
    * @returns {object} The current request's session ID.
    */
-  get sessionId() {
+  get sessionId () {
     const req = httpContext.get('request')
     return req?.sessionID
   },
@@ -64,7 +64,7 @@ const defaultMetadata = {
    *
    * @returns {object} The current request's user.
    */
-  get user() {
+  get user () {
     const req = httpContext.get('request')
     return req?.session?.user
   }
