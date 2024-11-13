@@ -43,7 +43,7 @@ spec:
         - name: SESSION_NAME
           value: "session"
         - name: SESSION_SECRET
-          value: "test"
+          value: "secret123"
         - name: LOG_LEVEL
           value: "silly"
         - name: LOGGER_MORGAN_FORMAT_ADD_REMOTE
@@ -56,6 +56,10 @@ spec:
           value: "/var/log/just-task-it/error.log"
         - name: LOGGER_UNCAUGHT_EXCEPTION_LOG_FILE
           value: "/var/log/just-task-it/uncaught-exception.log"
+        - name: REDIS_HOST
+          value: "redis"
+        - name: REDIS_PORT
+          value: "6379"
         ports:
           - containerPort: 3000
             name: taskit-http
