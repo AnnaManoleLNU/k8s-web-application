@@ -29,6 +29,7 @@ export class NotificationService {
     try {
       const connection = await amqp.connect(process.env.QUEUE_URL);
       const channel = await connection.createChannel();
+      console.log(connection, channel)
       const queue = 'task_notifications';
 
       await channel.assertQueue(queue, { durable: true });
