@@ -7,7 +7,7 @@ build:
     # - image: taskit
     - image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/taskit # Updated to my project url
       docker:
-        dockerfile: Dockerfile.development ##### DON'T FORGET TO CHANGE THIS TO Dockerfile.production/development
+        dockerfile: Dockerfile.production
 manifests:
   rawYaml:
     - k8s/ingress.yaml

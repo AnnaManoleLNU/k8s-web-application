@@ -1,6 +1,6 @@
 // controllers/NotificationService.js
 import redis from 'redis';
-import { WebClient } from '@slack/web-api';
+import axios from 'axios';
 
 export class NotificationService {
   constructor() {
@@ -14,13 +14,14 @@ export class NotificationService {
     this.redisClient.connect().catch(console.error);
     this.redisClient.on('error', (err) => console.error('Redis Subscriber Error:', err));
 
-    // Set up Slack client
-    this.slackClient = new WebClient(process.env.SLACK_BOT_TOKEN);
-    this.slackChannel = process.env.CHANNEL_ID
+    // Set up Slack variables
+    this.slackToken = process.env.SLACK_BOT_TOKEN;
+    console.log('Slack token:', this.slackToken);
+    this.slackChannel = 'C049LRZ39FE';
   }
 
   /**
-   * Sends a formatted Slack notification for task events.
+   * Sends a formatted Slack notification for task events using the Slack API directly.
    * 
    * @param {string} type - The type of command on the task (e.g., "created").
    * @param {string} task - The task description.
@@ -28,12 +29,29 @@ export class NotificationService {
    */
   async sendNotification(type, task, user) {
     const message = `${task} was ${type} by ${user}.`;
+    console.log('Sending notification to Slack:', message);
+    console.log('Slack token when sending', this.slackToken);
+
     try {
-      await this.slackClient.chat.postMessage({
-        channel: this.slackChannel,
-        text: message,
-      });
-      console.log('Notification sent to Slack successfully.');
+      const response = await axios.post(
+        'https://slack.com/api/chat.postMessage',
+        {
+          channel: this.slackChannel,
+          text: message,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.slackToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.data.ok) {
+        console.log('Notification sent to Slack successfully.');
+      } else {
+        console.error('Error in Slack API response:', response.data.error);
+      }
     } catch (error) {
       console.error('Error sending notification to Slack:', error);
     }

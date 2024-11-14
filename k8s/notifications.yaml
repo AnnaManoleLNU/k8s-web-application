@@ -29,7 +29,6 @@ spec:
       containers:
         - name: notifications
           image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/taskit
-          # command: ["node", "src/controllers/NotificationService.js"]  # Run NotificationService.js
           env:
             - name: REDIS_HOST
               value: "redis"
@@ -38,8 +37,10 @@ spec:
             - name: SLACK_BOT_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: slack-bot-secret
-                  key: SLACK_BOT_TOKEN
+                  name: slack-bot-token    # Name of the Secret 
+                  key: SLACK_BOT_TOKEN     # Key within the Secret
           ports:
             - containerPort: 3001
               name: notif-http
+      imagePullSecrets:
+        - name: regcred

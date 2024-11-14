@@ -13,6 +13,10 @@ import { NotificationService } from './NotificationService.js';
  * Encapsulates a controller.
  */
 export class TaskController {
+  constructor() {
+    // Initialize NotificationService
+    this.notificationService = new NotificationService();
+  }
   /**
    * Provide req.doc to the route if :id is present.
    *
@@ -93,7 +97,7 @@ export class TaskController {
 
       const { description, done } = req.body
 
-      await TaskModel.create({
+      const task = await TaskModel.create({
         description,
         done: done === 'on'
       })
@@ -101,7 +105,7 @@ export class TaskController {
       logger.silly('Created new task document')
 
       // Send a Slack notification
-      await this.notificationService.sendNotification('created', task.description, req.session.username);
+      await this.notificationService.sendNotification('created', task.description, process.env.GITLAB_USER);
 
       req.session.flash = { type: 'success', text: 'The task was created successfully.' }
       res.redirect('.')

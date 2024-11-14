@@ -60,6 +60,13 @@ spec:
           value: "redis"
         - name: REDIS_PORT
           value: "6379"
+        - name: GITLAB_USER
+          value: "am224wd"
+        - name: SLACK_BOT_TOKEN
+          valueFrom:
+            secretKeyRef: # Reference to a secret
+              name: slack-bot-token
+              key: SLACK_BOT_TOKEN # Key within the Secret
         ports:
           - containerPort: 3000
             name: taskit-http
