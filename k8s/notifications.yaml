@@ -37,8 +37,8 @@ spec:
               value: "redis"
             - name: REDIS_PORT
               value: "6379"
-            - name: QUEUE_URL
-              value: "amqp://user:password@rabbitmq.default.svc.cluster.local:5672/"
+            # - name: QUEUE_URL
+            #   value: "amqp://user:password@rabbitmq.default.svc.cluster.local:5672/"
             - name: SLACK_BOT_TOKEN
               valueFrom:
                 secretKeyRef:
