@@ -50,7 +50,7 @@ export class NotificationService {
       if (response.data.ok) {
         console.log('Notification sent to Slack successfully.');
       } else {
-        console.error('Error in Slack API response:', response.data.error);
+        console.error('Error in Slack API response:', response.data.error, response.data);
       }
     } catch (error) {
       console.error('Error sending notification to Slack:', error);
