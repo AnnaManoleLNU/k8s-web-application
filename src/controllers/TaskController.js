@@ -7,6 +7,7 @@
 
 import { logger } from '../config/winston.js'
 import { TaskModel } from '../models/TaskModel.js'
+import { NotificationService } from './NotificationService.js';
 
 /**
  * Encapsulates a controller.
@@ -98,6 +99,9 @@ export class TaskController {
       })
 
       logger.silly('Created new task document')
+
+      // Send a Slack notification
+      await this.notificationService.sendNotification('created', task.description, req.session.username);
 
       req.session.flash = { type: 'success', text: 'The task was created successfully.' }
       res.redirect('.')

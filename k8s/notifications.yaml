@@ -1,0 +1,45 @@
+# notifications.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifications
+spec:
+  ports:
+    - name: "notif-port"
+      port: 3001
+      targetPort: notif-http
+  selector:
+    app: notifications
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifications
+spec:
+  replicas: 3  # Multiple instances 
+  selector:
+    matchLabels:
+      app: notifications
+  template:
+    metadata:
+      labels:
+        app: notifications
+    spec:
+      containers:
+        - name: notifications
+          image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/taskit
+          # command: ["node", "src/controllers/NotificationService.js"]  # Run NotificationService.js
+          env:
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: SLACK_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: slack-bot-secret
+                  key: SLACK_BOT_TOKEN
+          ports:
+            - containerPort: 3001
+              name: notif-http

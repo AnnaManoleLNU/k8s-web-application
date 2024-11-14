@@ -13,7 +13,8 @@ manifests:
     - k8s/ingress.yaml
     - k8s/mongodb.yaml
     - k8s/taskit.yaml
-    - k8s/redis.yaml
+    - k8s/redis.yaml # added redis.yaml
+    - k8s/notifications.yaml # added notifications.yaml
 deploy:
   kubectl: {}
 
