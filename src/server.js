@@ -15,10 +15,14 @@ import { router } from './routes/router.js'
 import { randomUUID } from 'node:crypto'
 import { morganLogger } from './config/morgan.js'
 import { logger } from './config/winston.js'
+import { NotificationService } from './controllers/NotificationService.js'
 
 try {
   // Connect to MongoDB.
   await connectToDatabase(process.env.DB_CONNECTION_STRING)
+
+  // Instantiate the NotificationService
+const notificationService = new NotificationService();
 
   // Creates an Express application.
   const app = express()

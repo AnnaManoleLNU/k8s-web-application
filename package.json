@@ -13,7 +13,8 @@
     "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0",
     "docker:dev": "docker compose -p 2dv013-jit-dev -f docker-compose.yaml -f docker-compose.development.yaml up --build",
-    "docker:prod": "docker compose -p 2dv013-jit -f docker-compose.yaml -f docker-compose.production.yaml up --build"
+    "docker:prod": "docker compose -p 2dv013-jit -f docker-compose.yaml -f docker-compose.production.yaml up --build",
+    "start-notification-service": "node src/controllers/NotificationService.js"
   },
   "contributors": [
     "Johan Leitet <johan.leitet@lnu.se>",
