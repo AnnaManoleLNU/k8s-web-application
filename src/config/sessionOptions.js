@@ -8,6 +8,7 @@
 
 import RedisStore from 'connect-redis'
 import redis from 'redis'
+import { logger } from './winston.js'
 
 const redisClient = redis.createClient({
   socket: {
@@ -16,19 +17,14 @@ const redisClient = redis.createClient({
   }
 })
 
-console.log('Attempting to connect to Redis...')
-redisClient.connect().catch((err) => console.error('Redis connection error:', err))
-
-redisClient.on('error', (err) => {
-  console.error('Redis client error:', err)
-})
+redisClient.connect().catch((err) => logger.error('Redis connection error:', err))
 
 redisClient.on('connect', () => {
-  console.log('Connected to Redis successfully')
+  logger.info('Connected to Redis successfully')
 })
 
 redisClient.on('ready', () => {
-  console.log('Redis client is ready to use')
+  logger.info('Redis client is ready to use')
 })
 
 export const sessionOptions = {
