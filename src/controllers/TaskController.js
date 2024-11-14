@@ -7,35 +7,35 @@
 
 import { logger } from '../config/winston.js'
 import { TaskModel } from '../models/TaskModel.js'
-import amqp from 'amqplib';
+// import amqp from 'amqplib';
 
 /**
  * Encapsulates a controller.
  */
 export class TaskController {
-  constructor() {
-    // Initialize RabbitMQ connection for sending messages
-    this.initQueueConnection();
-  }
+  // constructor() {
+  //   // Initialize RabbitMQ connection for sending messages
+  //   this.initQueueConnection();
+  // }
 
-  async initQueueConnection() {
-    try {
-      this.connection = await amqp.connect(process.env.QUEUE_URL || 'amqp://localhost');
-      this.channel = await this.connection.createChannel();
-      await this.channel.assertQueue('task_notifications', { durable: true });
-    } catch (error) {
-      console.error('Error initializing queue connection:', error);
-    }
-  }
+  // async initQueueConnection() {
+  //   try {
+  //     this.connection = await amqp.connect(process.env.QUEUE_URL || 'amqp://localhost');
+  //     this.channel = await this.connection.createChannel();
+  //     await this.channel.assertQueue('task_notifications', { durable: true });
+  //   } catch (error) {
+  //     console.error('Error initializing queue connection:', error);
+  //   }
+  // }
 
-  async sendMessageToQueue(message) {
-    if (!this.channel) {
-      console.error('Queue channel not initialized.');
-      return;
-    }
-    this.channel.sendToQueue('task_notifications', Buffer.from(JSON.stringify(message)), { persistent: true });
-    console.log('Message sent to queue:', message);
-  }
+  // async sendMessageToQueue(message) {
+  //   if (!this.channel) {
+  //     console.error('Queue channel not initialized.');
+  //     return;
+  //   }
+  //   this.channel.sendToQueue('task_notifications', Buffer.from(JSON.stringify(message)), { persistent: true });
+  //   console.log('Message sent to queue:', message);
+  // }
 
   /**
    * Provide req.doc to the route if :id is present.
@@ -125,8 +125,8 @@ export class TaskController {
       logger.silly('Created new task document')
 
       // Send message to the queue instead of calling the notification service directly
-      const message = { type: 'created', task: task.description, user: process.env.GITLAB_USER || 'unknown' };
-      await this.sendMessageToQueue(message);
+      // const message = { type: 'created', task: task.description, user: process.env.GITLAB_USER || 'unknown' };
+      // await this.sendMessageToQueue(message);
 
       req.session.flash = { type: 'success', text: 'The task was created successfully.' }
       res.redirect('.')
