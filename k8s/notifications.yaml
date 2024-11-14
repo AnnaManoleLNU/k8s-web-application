@@ -30,6 +30,8 @@ spec:
         - name: notifications
           image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/taskit
           env:
+            - name: DB_CONNECTION_STRING
+              value: "mongodb://mongodb:27017/tasks"
             - name: REDIS_HOST
               value: "redis"
             - name: REDIS_PORT
