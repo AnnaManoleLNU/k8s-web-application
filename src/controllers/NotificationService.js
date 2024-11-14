@@ -16,7 +16,6 @@ export class NotificationService {
 
     // Set up Slack variables
     this.slackToken = process.env.SLACK_BOT_TOKEN;
-    console.log('Slack token:', this.slackToken);
     this.slackChannel = 'C049LRZ39FE';
   }
 
@@ -42,15 +41,17 @@ export class NotificationService {
         {
           headers: {
             Authorization: `Bearer ${this.slackToken}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8',
           },
         }
       );
 
       if (response.data.ok) {
-        console.log('Notification sent to Slack successfully.');
+        console.log('Notification sent to Slack successfully. 🎊🎊🎊🎊');
       } else {
-        console.error('Error in Slack API response:', response.data.error, response.data);
+        console.error('Error in Slack API response:');
+        console.error('Response:', response);
+        console.error('Response.data:', response.data);
       }
     } catch (error) {
       console.error('Error sending notification to Slack:', error);
