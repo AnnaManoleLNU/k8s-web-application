@@ -27,7 +27,7 @@ export class NotificationService {
    */
   async initQueueListener() {
     try {
-      const connection = await amqp.connect(process.env.QUEUE_URL || 'amqp://localhost');
+      const connection = await amqp.connect(process.env.QUEUE_URL);
       const channel = await connection.createChannel();
       const queue = 'task_notifications';
 
