@@ -9,7 +9,7 @@ build_taskit:    # Job name
     entrypoint: [""]
   script:  # See https://docs.gitlab.com/ee/ci/docker/using_kaniko.html
     - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"  
+      --context "${CI_PROJECT_DIR}/taskit"
       --dockerfile "${CI_PROJECT_DIR}/taskit/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}/taskit:${CI_COMMIT_TAG:-latest}"
 
@@ -20,7 +20,7 @@ build_queue:
     entrypoint: [""]
   script:
     - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"  
+      --context "${CI_PROJECT_DIR}/queue"  
       --dockerfile "${CI_PROJECT_DIR}/queue/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}/queue:${CI_COMMIT_TAG:-latest}"
 
@@ -31,7 +31,7 @@ build_notification:
     entrypoint: [""]
   script:
     - /kaniko/executor
-      --context "${CI_PROJECT_DIR}"  
+      --context "${CI_PROJECT_DIR}/notification"  
       --dockerfile "${CI_PROJECT_DIR}/notification/Dockerfile"
       --destination "${CI_REGISTRY_IMAGE}/notification:${CI_COMMIT_TAG:-latest}"
 
