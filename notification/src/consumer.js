@@ -1,7 +1,8 @@
 const amqp = require('amqplib');
 const axios = require('axios');
 
-const RABBITMQ_URL = "amqp://user:jQ7DkSkm4d5j0le6@my-release-rabbitmq.default.svc.cluster.local:5672"
+const RABBITMQ_URL = `amqp://user:${process.env.RABBITMQ_PASSWORD}@my-release-rabbitmq.default.svc.cluster.local:5672`;
+
 const QUEUE_NAME = 'task_queue';
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
 const CHANNEL_ID = "C049LRZ39FE";

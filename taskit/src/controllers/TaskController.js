@@ -116,7 +116,8 @@ export class TaskController {
   }
 
   async #publishToQueue(message) {
-    const RABBITMQ_URL = "amqp://user:jQ7DkSkm4d5j0le6@my-release-rabbitmq.default.svc.cluster.local:5672"
+    const RABBITMQ_URL = `amqp://user:${process.env.RABBITMQ_PASSWORD}@my-release-rabbitmq.default.svc.cluster.local:5672`;
+
     const QUEUE_NAME = 'task_queue';
 
     try {

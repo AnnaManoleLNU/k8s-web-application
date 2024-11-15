@@ -61,8 +61,6 @@ spec:
           value: "6379"
         - name: GITLAB_USER
           value: "am224wd"
-        - name: RABBITMQ_URL
-          value: "amqp://user:$(RABBITMQ_PASSWORD)@rabbitmq.default.svc.cluster.local:5672"
         - name: RABBITMQ_PASSWORD
           valueFrom:
             secretKeyRef:
