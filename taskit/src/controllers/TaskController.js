@@ -127,7 +127,8 @@ export class TaskController {
       channel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(message)));
       logger.silly(`Message sent to queue: ${JSON.stringify(message)}`);
 
-      setTimeout(() => connection.close(), 500); // Allow time for the message to be sent
+      await channel.close();
+      await connection.close();
     } catch (error) {
       logger.error('Error in publishing message to RabbitMQ', { error });
     }

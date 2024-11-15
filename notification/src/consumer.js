@@ -35,26 +35,29 @@ async function sendSlackMessage(text) {
 }
 
 async function consumeMessages() {
-  try {
-    const connection = await amqp.connect(RABBITMQ_URL);
-    const channel = await connection.createChannel();
-    await channel.assertQueue(QUEUE_NAME, { durable: true });
-
-    console.log(`Waiting for messages in ${QUEUE_NAME}`);
-    channel.consume(QUEUE_NAME, async (msg) => {
-      if (msg !== null) {
-        const message = msg.content.toString();
-        console.log(`Received message: ${message}`);
-
-        // Send the message to Slack
-        await sendSlackMessage(message);
-
-        channel.ack(msg);
-      }
-    });
-  } catch (error) {
-    console.error('Error in consuming messages:', error);
+  while (true) {
+    try {
+      const connection = await amqp.connect(RABBITMQ_URL);
+      const channel = await connection.createChannel();
+      await channel.assertQueue(QUEUE_NAME, { durable: true });
+  
+      console.log(`Waiting for messages in ${QUEUE_NAME}`);
+      channel.consume(QUEUE_NAME, async (msg) => {
+        if (msg !== null) {
+          const message = msg.content.toString();
+          console.log(`Received message: ${message}`);
+          await sendSlackMessage(message);
+          channel.ack(msg);
+        }
+      });
+      break; // Exit retry loop if successful
+    } catch (error) {
+      console.error('Error in consuming messages:', error);
+      console.log('Retrying connection in 5 seconds...');
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+    }
   }
+  
 }
 
 module.exports = { consumeMessages };
