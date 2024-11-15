@@ -20,7 +20,7 @@ manifests:
     - k8s/taskit.yaml
     - k8s/redis.yaml 
     - k8s/notification.yaml
-    - k8s/rabbitmq.yaml
+    # - k8s/rabbitmq.yaml
 deploy:
   kubectl: {}
 

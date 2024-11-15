@@ -21,7 +21,12 @@ spec:
             - containerPort: 3002
           env:
             - name: RABBITMQ_URL
-              value: "amqp://rabbitmq:5672"
+              value: "amqp://user:$(RABBITMQ_PASSWORD)@rabbitmq.default.svc.cluster.local:5672"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-secret
+                  key: RABBITMQ_PASSWORD
             - name: SLACK_BOT_TOKEN
               valueFrom:
                 secretKeyRef:
