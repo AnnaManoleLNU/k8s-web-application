@@ -1,12 +1,14 @@
 const amqp = require('amqplib');
 const axios = require('axios');
 
-const RABBITMQ_URL = process.env.RABBITMQ_URL || 'amqp://localhost';
+const RABBITMQ_URL = "amqp://rabbitmq:5672";
 const QUEUE_NAME = 'task_queue';
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
 const CHANNEL_ID = "C049LRZ39FE";
 
 async function sendSlackMessage(text) {
+  console.log(process.env.SLACK_BOT_TOKEN);
+  console.log(process.env.RABBITMQ_URL);
   try {
     const response = await axios.post(
       'https://slack.com/api/chat.postMessage',
