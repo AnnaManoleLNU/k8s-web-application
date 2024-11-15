@@ -12,6 +12,8 @@ spec:
       labels:
         app: notification
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: notification
           image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/notification
