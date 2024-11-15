@@ -7,7 +7,7 @@
 
 import { logger } from '../config/winston.js'
 import { TaskModel } from '../models/TaskModel.js'
-// import amqp from 'amqplib';
+import amqp from 'amqplib';
 
 /**
  * Encapsulates a controller.
