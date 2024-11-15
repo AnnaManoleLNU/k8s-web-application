@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+        - name: notification
+          image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/notification
+          ports:
+            - containerPort: 3002
+          env:
+            - name: RABBITMQ_URL
+              value: "amqp://rabbitmq"
+            - name: SLACK_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: slack-secret
+                  key: SLACK_BOT_TOKEN
+            - name: CHANNEL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: slack-secret
+                  key: CHANNEL_ID
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification
+spec:
+  selector:
+    app: notification
+  ports:
+    - protocol: TCP
+      port: 3002
+      targetPort: 3002
+  type: ClusterIP

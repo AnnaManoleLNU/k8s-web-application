@@ -4,18 +4,23 @@ metadata:
   name: k8s-web-application
 build:
   artifacts:
-    # - image: taskit
-    - image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/taskit # Updated to my project url
+    - image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/taskit
       docker:
-        dockerfile: Dockerfile.production
+        dockerfile: taskit/Dockerfile
+    - image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/queue
+      docker:
+        dockerfile: queue/Dockerfile
+    - image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/notification
+      docker:
+        dockerfile: notification/Dockerfile
 manifests:
   rawYaml:
     - k8s/ingress.yaml
     - k8s/mongodb.yaml
     - k8s/taskit.yaml
-    - k8s/redis.yaml # added redis.yaml
-    - k8s/notifications.yaml # added notifications.yaml
-    - k8s/rabbitmq.yaml # added rabbitmq.yaml
+    - k8s/redis.yaml 
+    - k8s/notification.yaml
+    - k8s/queue.yaml
 deploy:
   kubectl: {}
 
