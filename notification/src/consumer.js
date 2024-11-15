@@ -44,7 +44,8 @@ async function consumeMessages() {
       console.log(`Waiting for messages in ${QUEUE_NAME}`);
       channel.consume(QUEUE_NAME, async (msg) => {
         if (msg !== null) {
-          const message = msg.content.toString();
+          console.log('the message', msg);
+          const message = "hello world";
           console.log(`Received message: ${message}`);
           await sendSlackMessage(message);
           channel.ack(msg);

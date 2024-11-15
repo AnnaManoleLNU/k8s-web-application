@@ -164,6 +164,13 @@ export class TaskController {
       if (req.doc.isModified()) {
         await req.doc.save()
         logger.silly('Updated task document', { id: req.doc.id })
+
+        // Publish the task to RabbitMQ
+        await this.#publishToQueue({
+          event: 'updated',
+          task: req.doc.description,
+          user: "am224wd"
+        });
         req.session.flash = { type: 'success', text: 'The task was updated successfully.' }
       } else {
         logger.silly('Unnecessary to update task document', { id: req.doc.id })
