@@ -58,10 +58,7 @@ deploy:
     
 
     # Build the different images
-    - skaffold deploy --profile production --images \
-        ${CI_REGISTRY_IMAGE}/taskit:${CI_COMMIT_TAG:-latest},\
-        ${CI_REGISTRY_IMAGE}/queue:${CI_COMMIT_TAG:-latest},\
-        ${CI_REGISTRY_IMAGE}/notification:${CI_COMMIT_TAG:-latest}
+    - skaffold deploy --profile production --images ${CI_REGISTRY_IMAGE}/taskit:${CI_COMMIT_TAG:-latest},${CI_REGISTRY_IMAGE}/queue:${CI_COMMIT_TAG:-latest},${CI_REGISTRY_IMAGE}/notification:${CI_COMMIT_TAG:-latest}
     
    # Debugging outputs after completion
     - kubectl get deployments
