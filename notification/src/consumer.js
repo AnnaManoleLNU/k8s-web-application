@@ -7,8 +7,6 @@ const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
 const CHANNEL_ID = "C049LRZ39FE";
 
 async function sendSlackMessage(text) {
-  console.log(process.env.SLACK_BOT_TOKEN);
-  console.log(process.env.RABBITMQ_URL);
   try {
     const response = await axios.post(
       'https://slack.com/api/chat.postMessage',
@@ -40,14 +38,22 @@ async function consumeMessages() {
       const connection = await amqp.connect(RABBITMQ_URL);
       const channel = await connection.createChannel();
       await channel.assertQueue(QUEUE_NAME, { durable: true });
-  
+
       console.log(`Waiting for messages in ${QUEUE_NAME}`);
       channel.consume(QUEUE_NAME, async (msg) => {
         if (msg !== null) {
-          console.log('Message metadata:', JSON.stringify(msg.properties, null, 2));
           const messageContent = msg.content.toString();
-          console.log('Message content:', messageContent);   
-          await sendSlackMessage(messageContent);
+          console.log('Message content:', messageContent);
+
+          // Parse the message and format it for Slack
+          const message = JSON.parse(messageContent);
+          const notificationText = formatSlackMessage(message);
+
+          console.log(`Formatted Slack message: ${notificationText}`);
+
+          // Send the formatted message to Slack
+          await sendSlackMessage(notificationText);
+
           channel.ack(msg);
         }
       });
@@ -58,7 +64,11 @@ async function consumeMessages() {
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
-  
+}
+
+function formatSlackMessage(message) {
+  const { event, task, user } = message;
+  return `${task} was ${event} by ${user}.`;
 }
 
 module.exports = { consumeMessages };
