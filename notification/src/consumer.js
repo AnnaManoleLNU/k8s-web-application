@@ -2,6 +2,7 @@ const amqp = require('amqplib');
 const axios = require('axios');
 
 const RABBITMQ_URL = `amqp://user:${process.env.RABBITMQ_PASSWORD}@my-release-rabbitmq.default.svc.cluster.local:5672`;
+const RABBITMQ_URL2= 'amqp://rabbitmq:5672';
 
 const QUEUE_NAME = 'task_queue';
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
@@ -36,7 +37,7 @@ async function sendSlackMessage(text) {
 async function consumeMessages() {
   while (true) {
     try {
-      const connection = await amqp.connect(RABBITMQ_URL);
+      const connection = await amqp.connect(RABBITMQ_URL2);
       const channel = await connection.createChannel();
       await channel.assertQueue(QUEUE_NAME, { durable: true });
 
