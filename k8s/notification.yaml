@@ -25,13 +25,8 @@ spec:
             - name: SLACK_BOT_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: slack-secret
+                  name: slack-bot-token
                   key: SLACK_BOT_TOKEN
-            - name: CHANNEL_ID
-              valueFrom:
-                secretKeyRef:
-                  name: slack-secret
-                  key: CHANNEL_ID
 ---
 apiVersion: v1
 kind: Service
