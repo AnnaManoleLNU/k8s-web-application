@@ -44,10 +44,10 @@ async function consumeMessages() {
       console.log(`Waiting for messages in ${QUEUE_NAME}`);
       channel.consume(QUEUE_NAME, async (msg) => {
         if (msg !== null) {
-          console.log('the message', msg);
-          const message = "hello world";
-          console.log(`Received message: ${message}`);
-          await sendSlackMessage(message);
+          console.log('Message metadata:', JSON.stringify(msg.properties, null, 2));
+          const messageContent = msg.content.toString();
+          console.log('Message content:', messageContent);   
+          await sendSlackMessage(messageContent);
           channel.ack(msg);
         }
       });
