@@ -21,7 +21,7 @@ spec:
             - containerPort: 3002
           env:
             - name: RABBITMQ_URL
-              value: "amqp://rabbitmq"
+              value: "amqp://rabbitmq:5672"
             - name: SLACK_BOT_TOKEN
               valueFrom:
                 secretKeyRef:

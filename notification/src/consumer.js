@@ -1,4 +1,3 @@
-// src/consumer.js
 const amqp = require('amqplib');
 const axios = require('axios');
 
