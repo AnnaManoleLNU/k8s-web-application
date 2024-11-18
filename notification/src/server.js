@@ -1,5 +1,6 @@
-const express = require('express');
-const { consumeMessages } = require('./consumer');
+import express from 'express';
+import { consumeMessages } from './consumer.js';
+
 const app = express();
 
 consumeMessages();
