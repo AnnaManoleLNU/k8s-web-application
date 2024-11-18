@@ -1,9 +1,9 @@
 import express from 'express'
-import { NoficationService } from './consumer.js'
+import { NotificationService } from './NotificationService.js'
 
 const app = express()
 
-const notificationService = new NoficationService()
+const notificationService = new NotificationService()
 notificationService.consumeMessages()
 
 const PORT = process.env.PORT || 3002

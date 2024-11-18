@@ -6,7 +6,8 @@ const QUEUE_NAME = "task_queue"
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN
 const CHANNEL_ID = "C049LRZ39FE"
 
-export class NoficationService {
+// Consumes messages from RabbitMQ and sends them to Slack
+export class NotificationService {
   async #sendSlackMessage(text) {
     try {
       const response = await axios.post(
