@@ -122,7 +122,7 @@ export class TaskController {
     const QUEUE_NAME = 'task_queue';
 
     try {
-      const connection = await amqp.connect(RABBITMQ_URL);
+      const connection = await amqp.connect(RABBITMQ_URL2);
       const channel = await connection.createChannel();
       await channel.assertQueue(QUEUE_NAME, { durable: true });
 
