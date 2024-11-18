@@ -159,7 +159,7 @@ export class TaskController {
       logger.silly('Updating task document', { id: req.doc.id, body: req.body })
 
       if ('description' in req.body) req.doc.description = req.body.description
-      if ('done' in req.body) req.doc.done = req.body.done === 'on'
+      req.doc.done = req.body.done === 'on' // default to false
 
       if (req.doc.isModified()) {
         await req.doc.save()
