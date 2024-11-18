@@ -7,9 +7,6 @@ build:
     - image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/taskit
       docker:
         dockerfile: taskit/Dockerfile
-    # - image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/queue
-    #   docker:
-    #     dockerfile: queue/Dockerfile
     - image: gitlab.lnu.se:5050/2dv013/student/am224wd/part2-architecture/kuberneterized-web-application/notification
       docker:
         dockerfile: notification/Dockerfile
@@ -20,7 +17,6 @@ manifests:
     - k8s/taskit.yaml
     - k8s/redis.yaml 
     - k8s/notification.yaml
-    # - k8s/rabbitmq.yaml
 deploy:
   kubectl: {}
 
