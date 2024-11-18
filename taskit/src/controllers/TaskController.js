@@ -104,7 +104,7 @@ export class TaskController {
         event: 'created',
         task: task.description,
         user: "am224wd" 
-      });
+      })
 
       logger.silly('Created new task document')
 
@@ -116,19 +116,19 @@ export class TaskController {
   }
 
   async #publishToQueue(message) {
-    const RABBITMQ_URL= 'amqp://rabbitmq:5672';
-    const QUEUE_NAME = 'task_queue';
+    const RABBITMQ_URL= 'amqp://rabbitmq:5672'
+    const QUEUE_NAME = 'task_queue'
 
     try {
-      const connection = await amqp.connect(RABBITMQ_URL);
-      const channel = await connection.createChannel();
-      await channel.assertQueue(QUEUE_NAME, { durable: true });
+      const connection = await amqp.connect(RABBITMQ_URL)
+      const channel = await connection.createChannel()
+      await channel.assertQueue(QUEUE_NAME, { durable: true })
 
-      channel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(message)));
-      logger.silly(`Message sent to queue: ${JSON.stringify(message)}`);
+      channel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(message)))
+      logger.silly(`Message sent to queue: ${JSON.stringify(message)}`)
 
-      await channel.close();
-      await connection.close();
+      await channel.close()
+      await connection.close()
     } catch (error) {
       logger.error('Error in publishing message to RabbitMQ', { error });
     }
@@ -167,10 +167,11 @@ export class TaskController {
 
         // Publish the task to RabbitMQ
         await this.#publishToQueue({
-          event: 'updated',
+          event: req.doc.done ? 'completed' : 'uncompleted',
           task: req.doc.description,
           user: "am224wd"
-        });
+        })
+
         req.session.flash = { type: 'success', text: 'The task was updated successfully.' }
       } else {
         logger.silly('Unnecessary to update task document', { id: req.doc.id })
@@ -209,6 +210,13 @@ export class TaskController {
       await req.doc.deleteOne()
 
       logger.silly('Deleted task document', { id: req.doc.id })
+
+      // Publish the task to RabbitMQ
+      await this.#publishToQueue({
+        event: 'deleted',
+        task: req.doc.description,
+        user: 'am224wd'
+      })
 
       req.session.flash = { type: 'success', text: 'The task was deleted successfully.' }
       res.redirect('..')
