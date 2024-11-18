@@ -1,11 +1,12 @@
-import express from 'express';
-import { consumeMessages } from './consumer.js';
+import express from 'express'
+import { NoficationService } from './consumer.js'
 
-const app = express();
+const app = express()
 
-consumeMessages();
+const notificationService = new NoficationService()
+notificationService.consumeMessages()
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3002
 app.listen(PORT, () => {
-  console.log(`Notification service is running on port ${PORT}`);
-});
+  console.log(`Notification service is running on port ${PORT}`)
+})
