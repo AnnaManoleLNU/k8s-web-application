@@ -1,3 +1,6 @@
+####################################################
+# Not currently used in the project - i used helm to install rabbitmq
+####################################################
 apiVersion: v1
 kind: PersistentVolume
 metadata:
