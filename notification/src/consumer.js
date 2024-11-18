@@ -37,7 +37,7 @@ async function sendSlackMessage(text) {
 async function consumeMessages() {
   while (true) {
     try {
-      const connection = await amqp.connect(RABBITMQ_URL2);
+      const connection = await amqp.connect(RABBITMQ_URL);
       const channel = await connection.createChannel();
       await channel.assertQueue(QUEUE_NAME, { durable: true });
 
