@@ -102,7 +102,8 @@ export class TaskController {
       // Publish the task to RabbitMQ
       await this.#publishToQueue({
         event: 'created',
-        task: task.description
+        task: task.description,
+        user: "am224wd" 
       })
 
       logger.silly('Created new task document')
@@ -168,6 +169,7 @@ export class TaskController {
         await this.#publishToQueue({
           event: req.doc.done ? 'completed' : 'uncompleted',
           task: req.doc.description,
+          user: "am224wd"
         })
 
         req.session.flash = { type: 'success', text: 'The task was updated successfully.' }
@@ -213,6 +215,7 @@ export class TaskController {
       await this.#publishToQueue({
         event: 'deleted',
         task: req.doc.description,
+        user: 'am224wd'
       })
 
       req.session.flash = { type: 'success', text: 'The task was deleted successfully.' }
