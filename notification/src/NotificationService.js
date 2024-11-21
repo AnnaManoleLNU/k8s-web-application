@@ -45,7 +45,7 @@ export class NotificationService {
         }
       );
 
-      const data = await response.json();
+      const data = response.data; // using axios we don't need to parse the response with json, it's already an object...
       console.log(data);
 
       if (data.ok) {
@@ -71,7 +71,7 @@ export class NotificationService {
         }
       );
 
-      const data = await response.json();
+      const data = response.data; // same here, no need to parse the response
       console.log(data);
       if (data.ok) {
         return data.user.name;
