@@ -41,10 +41,12 @@ spec:
   selector:
     app: rabbitmq
   ports:
-    - protocol: TCP
+    - name: amqp
+      protocol: TCP
       port: 5672
       targetPort: 5672
-    - protocol: TCP
+    - name: management
+      protocol: TCP
       port: 15672
       targetPort: 15672
   type: ClusterIP  # Exposes the service inside the cluster (default)
