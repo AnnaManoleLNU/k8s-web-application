@@ -1,41 +1,18 @@
-####################################################
-# Not currently used in the project - i used helm to install rabbitmq
-####################################################
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: rabbitmq-pv
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: rabbitmq-storage
-  hostPath:
-    path: /mnt/data/rabbitmq
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: rabbitmq-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: rabbitmq-storage
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: rabbitmq
+  namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: rabbitmq
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
   template:
     metadata:
       labels:
@@ -45,11 +22,11 @@ spec:
         - name: rabbitmq
           image: rabbitmq:3-management
           ports:
-            - containerPort: 5672  # RabbitMQ default port
-            - containerPort: 15672 # Management UI port
+            - containerPort: 5672
+            - containerPort: 15672
           volumeMounts:
-            - name: rabbitmq-data
-              mountPath: /var/lib/rabbitmq
+            - mountPath: /var/lib/rabbitmq
+              name: rabbitmq-data
       volumes:
         - name: rabbitmq-data
           persistentVolumeClaim:
@@ -59,6 +36,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: rabbitmq
+  namespace: default # The namespace the service is created in, default is default
 spec:
   selector:
     app: rabbitmq
@@ -66,8 +44,8 @@ spec:
     - protocol: TCP
       port: 5672
       targetPort: 5672
-      name: amqp
     - protocol: TCP
       port: 15672
       targetPort: 15672
-      name: management
+  type: ClusterIP  # Exposes the service inside the cluster (default)
+
