@@ -46,6 +46,7 @@ export class NotificationService {
       );
 
       const data = await response.json();
+      console.log(data);
 
       if (data.ok) {
         return data.user_id;
@@ -71,6 +72,7 @@ export class NotificationService {
       );
 
       const data = await response.json();
+      console.log(data);
       if (data.ok) {
         return data.user.name;
       } else {
@@ -96,7 +98,7 @@ export class NotificationService {
 
             // Parse the message and format it for Slack
             const message = JSON.parse(messageContent);
-            const userId = this.#getSlackUserId();
+            const userId = await this.#getSlackUserId();
             const user = await this.#getSlackUsername(userId);
 
             const notificationText = this.#formatSlackMessage({
