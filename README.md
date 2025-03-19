@@ -1,74 +1,35 @@
-# Kuberneterized Web Application
+# Just Task It Application Extension
 
-Development and production environment
+This project extends the JTI example application by fixing existing issues and adding new functionality.
 
-## Development
+## Overview  
+The goal is to enhance the JTI application, ensure continuous delivery using a GitLab pipeline, and deploy the application to a Kubernetes cluster.
 
-### Requirements
+## Features
+### **1. Application Setup**  
+- Extend the existing JTI application.  
+- Deploy the application in a Kubernetes cluster with at least three worker nodes.  
+- The cluster supports multiple instances of the Taskit and Notification services.  
 
-#### kubctl
-**Kubectl** is a command line interface to inspect and control the kubernetes instance.  
+### **2. Continuous Delivery**  
+- Set up a GitLab pipeline to automate updates to the cluster's services.  
 
-If you have Docker Desktop installed, you should already have kubectl. Verify with:
+### **3. Taskit Service Fixes**  
+- **Session handling:** Store sessions in a key-value store instead of memory with Redis.
+- **Notifications:** Implement asynchronous single-receiver pattern between Taskit and Notification services with RabbitMQ.
+- **Data persistence:** Store data on a mounted volume.
 
-```bash
-kubectl version
-```
+### **4. Notification Service**  
+- Dequeue messages from the message broker and post them to the Slack channel `#2dv013-notifications`.  
+- Include:  
+  - Command type (e.g., "created," "completed," "uncompleted")  
+  - Task details (e.g., "Buy milk")  
+  - Username (e.g., "en999zzz")  
+- Example: *"Buy milk was completed by en999zzz."*  
+- Use Slack bot credentials from GitLab Secrets.  
 
-If not installed, or you need to upgrade: [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)  
-
-#### Skaffold
-**Skaffold** is a command line tool to helps with the development workflow.
-
-[Install Skaffold](https://skaffold.dev/docs/install/)  
-
-#### Minikube
-**Minikube** is a small kubernetes instance running inside a Docker container. 
-
-[Install minikube](https://minikube.sigs.k8s.io/docs/start/)  
-
-### Development
-
-Make sure Docker Desktop is running.
-
-Start minikube:  
-
-```bash
-minikube start
-```
-
-Enable the Nginx ingress controller for minikube:
-
-```bash
-minikube addons enable ingress
-```
-
-See Using [Stackoverflow - What does minikube docker-env mean?](https://stackoverflow.com/questions/52310599/what-does-minikube-docker-env-mean) for details.
-
-
-#### Bash
-
-```bash
-eval $(minikube -p minikube docker-env)
-```
-
-Start Skaffold for development:  
-
-```bash
-skaffold dev
-```  
-
-#### Connect to the exposed service in Minicube
-
-Open a new terminal.
-
-```bash
-minikube tunnel
-```
-_You may be prompted for your computer password since minikube want´s to open priviliged ports._
-
-Then visit the [http://localhost](http://localhost)
-
-## Production
-
-For production in CSCloud:
+### **5. Techniques**  
+- Terraform  
+- Kubernetes  
+- Redis for session management in Node.js  
+- RabbitMQ installation using Helm 
